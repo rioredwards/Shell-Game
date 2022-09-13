@@ -1,5 +1,5 @@
 /* Imports */
-import { getRandomItem } from './utils.js';
+// import { getRandomItem } from './utils.js';
 
 /* State */
 let gameState = 'guess'; // 'guess' or 'results'
@@ -29,6 +29,7 @@ const display3 = document.getElementById('display-3');
 // display
 /* Actions */
 function displayShells(gameState) {
+    /*     
     gameState = 'results'; // FIXME Delete
     result = 'lose'; // FIXME Delete
     guess = 3; // FIXME Delete
@@ -39,7 +40,8 @@ function displayShells(gameState) {
         `guess: ${guess}`,
         `result: ${result}`,
         `pearl: ${pearl}`
-    );
+    ); 
+    */
 
     if (gameState === 'guess') {
         guesses.classList.remove('hidden');
@@ -110,7 +112,6 @@ function liftShell(userGuess) {
         // Display 'Not Here!'
     }
     gameState = 'results';
-    console.log(userGuess);
 }
 
 function loadPage() {
