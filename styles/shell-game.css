@@ -48,6 +48,7 @@ section {
 
 .shells img .reveal {
     transform: translateY(-75px);
+    background-color: blue;
 }
 
 .pearl {
