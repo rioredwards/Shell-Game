@@ -52,17 +52,14 @@ function displayShells(gameState) {
         if (guess === 1) {
             shell1.classList.add('reveal');
             if (result === 'win') {
-                console.log(`gameState: reveal`, `guess: 1`, `result: win`, `pearl: 1`);
                 display1.textContent = 'Found it!';
                 pearl1.classList.remove('hidden');
             } else {
                 display1.textContent = 'Not Here!';
                 if (pearl === 2) {
-                    console.log(`gameState: reveal`, `guess: 1`, `result: lose`, `pearl: 2`);
                     shell2.classList.add('reveal');
                     pearl2.classList.remove('hidden');
                 } else {
-                    console.log(`gameState: reveal`, `guess: 1`, `result: lose`, `pearl: 3`);
                     shell3.classList.add('reveal');
                     pearl3.classList.remove('hidden');
                 }
@@ -70,17 +67,14 @@ function displayShells(gameState) {
         } else if (guess === 2) {
             shell2.classList.add('reveal');
             if (result === 'win') {
-                console.log(`gameState: reveal`, `guess: 2`, `result: win`, `pearl: 2`);
                 display2.textContent = 'Found it!';
                 pearl2.classList.remove('hidden');
             } else {
                 display2.textContent = 'Not Here!';
                 if (pearl === 1) {
-                    console.log(`gameState: reveal`, `guess: 2`, `result: lose`, `pearl: 1`);
                     shell1.classList.add('reveal');
                     pearl1.classList.remove('hidden');
                 } else {
-                    console.log(`gameState: reveal`, `guess: 2`, `result: lose`, `pearl: 3`);
                     shell3.classList.add('reveal');
                     pearl3.classList.remove('hidden');
                 }
@@ -88,17 +82,14 @@ function displayShells(gameState) {
         } else {
             shell3.classList.add('reveal');
             if (result === 'win') {
-                console.log(`gameState: reveal`, `guess: 3`, `result: win`, `pearl: 3`);
                 display3.textContent = 'Found it!';
                 pearl3.classList.remove('hidden');
             } else {
                 display3.textContent = 'Not Here!';
                 if (pearl === 1) {
-                    console.log(`gameState: reveal`, `guess: 3`, `result: lose`, `pearl: 1`);
                     shell1.classList.add('reveal');
                     pearl1.classList.remove('hidden');
                 } else {
-                    console.log(`gameState: reveal`, `guess: 3`, `result: lose`, `pearl: 2`);
                     shell2.classList.add('reveal');
                     pearl2.classList.remove('hidden');
                 }
