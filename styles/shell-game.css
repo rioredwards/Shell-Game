@@ -46,7 +46,7 @@ section {
     transition: all 300ms ease-out;
 }
 
-.shells img.reveal {
+.shells img .reveal {
     transform: translateY(-75px);
 }
 
