@@ -89,10 +89,10 @@ function displayGuess() {
 guess1.addEventListener('click', () => {
     liftShell('1');
 });
-guess1.addEventListener('click', () => {
+guess2.addEventListener('click', () => {
     liftShell('2');
 });
-guess1.addEventListener('click', () => {
+guess3.addEventListener('click', () => {
     liftShell('3');
 });
 
