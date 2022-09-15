@@ -6,9 +6,9 @@ let gameState = 'guess'; // 'guess' or 'results'
 let result = ''; // 'win' or 'lose'
 let guess; // 1, 2, 3
 let pearl; // 1, 2, 3
-let wins;
-let losses;
-let total;
+let wins = 0;
+let losses = 0;
+let total = 0;
 
 const shellOptions = ['1', '2', '3'];
 
@@ -30,17 +30,13 @@ const pearl3 = document.getElementById('pearl-3');
 const display1 = document.getElementById('display-1');
 const display2 = document.getElementById('display-2');
 const display3 = document.getElementById('display-3');
+const winsDisplay = document.getElementById('wins-display');
+const lossesDisplay = document.getElementById('losses-display');
+const totalDisplay = document.getElementById('total-display');
 
 // display
 /* Actions */
 function displayShells(gameState) {
-    console.log(
-        `gameState: ${gameState}`,
-        `guess: ${guess}`,
-        `result: ${result}`,
-        `pearl: ${pearl}`
-    );
-
     if (gameState === 'guess') {
         guesses.classList.remove('hidden');
         results.classList.add('hidden');
@@ -112,16 +108,16 @@ function liftShell(userGuess) {
     guess = userGuess;
     if (userGuess === pearl) {
         result = 'win';
-        displayShells(gameState);
     } else {
         result = 'lose';
-        displayShells(gameState);
     }
+    updateScoreboard();
+    displayShells(gameState);
+    loadPage();
 }
 
 function placePearl() {
     pearl = getRandomItem(shellOptions);
-    console.log(pearl);
 }
 
 function playAgain() {
@@ -132,10 +128,27 @@ function playAgain() {
     loadPage();
 }
 
+function updateScoreboard() {
+    if (result === 'win') {
+        wins++;
+    } else {
+        losses++;
+    }
+    total++;
+}
+
+function displayScoreboard() {
+    winsDisplay.textContent = wins;
+    lossesDisplay.textContent = losses;
+    totalDisplay.textContent = total;
+}
+
 function loadPage() {
     displayShells(gameState);
     if (gameState === 'guess') placePearl(pearl);
+    displayScoreboard();
 }
+
 // event listeners
 guess1.addEventListener('click', () => {
     liftShell('1');
