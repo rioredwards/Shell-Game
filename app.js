@@ -1,11 +1,16 @@
 /* Imports */
-// import { getRandomItem } from './utils.js';
+import { getRandomItem } from './utils.js';
 
 /* State */
 let gameState = 'guess'; // 'guess' or 'results'
 let result = ''; // 'win' or 'lose'
 let guess; // 1, 2, 3
 let pearl; // 1, 2, 3
+let wins;
+let losses;
+let total;
+
+const shellOptions = ['1', '2', '3'];
 
 /* Component */
 // Get DOM
@@ -29,29 +34,31 @@ const display3 = document.getElementById('display-3');
 // display
 /* Actions */
 function displayShells(gameState) {
-    /*     
-    gameState = 'results'; // FIXME Delete
-    result = 'lose'; // FIXME Delete
-    guess = 3; // FIXME Delete
-    pearl = 2; // FIXME Delete
-
     console.log(
         `gameState: ${gameState}`,
         `guess: ${guess}`,
         `result: ${result}`,
         `pearl: ${pearl}`
-    ); 
-    */
+    );
 
     if (gameState === 'guess') {
         guesses.classList.remove('hidden');
         results.classList.add('hidden');
         playAgainBtn.classList.add('hidden');
+        pearl1.classList.add('hidden');
+        pearl2.classList.add('hidden');
+        pearl3.classList.add('hidden');
+        shell1.classList.remove('reveal');
+        shell2.classList.remove('reveal');
+        shell3.classList.remove('reveal');
+        display1.textContent = '';
+        display2.textContent = '';
+        display3.textContent = '';
     } else if (gameState === 'results') {
         guesses.classList.add('hidden');
         results.classList.remove('hidden');
         playAgainBtn.classList.remove('hidden');
-        if (guess === 1) {
+        if (guess === '1') {
             shell1.classList.add('reveal');
             if (result === 'win') {
                 display1.textContent = 'Found it!';
@@ -66,7 +73,7 @@ function displayShells(gameState) {
                     pearl3.classList.remove('hidden');
                 }
             }
-        } else if (guess === 2) {
+        } else if (guess === '2') {
             shell2.classList.add('reveal');
             if (result === 'win') {
                 display2.textContent = 'Found it!';
@@ -101,34 +108,49 @@ function displayShells(gameState) {
 }
 
 function liftShell(userGuess) {
-    if (userGuess === pearl) {
-        // Win
-        // Lift the shell with pearl
-        // Display 'Found It!'
-    } else {
-        // Lose
-        // Lift the shell with pearl
-        // Lift the shell guessed
-        // Display 'Not Here!'
-    }
     gameState = 'results';
+    guess = userGuess;
+    if (userGuess === pearl) {
+        result = 'win';
+        displayShells(gameState);
+    } else {
+        result = 'lose';
+        displayShells(gameState);
+    }
+}
+
+function placePearl() {
+    pearl = getRandomItem(shellOptions);
+    console.log(pearl);
+}
+
+function playAgain() {
+    gameState = 'guess';
+    result = '';
+    guess = '';
+    pearl = '';
+    loadPage();
 }
 
 function loadPage() {
     displayShells(gameState);
+    if (gameState === 'guess') placePearl(pearl);
 }
-
-// function playAgain() {} TODO
-
 // event listeners
 guess1.addEventListener('click', () => {
     liftShell('1');
 });
+
 guess2.addEventListener('click', () => {
     liftShell('2');
 });
+
 guess3.addEventListener('click', () => {
     liftShell('3');
+});
+
+playAgainBtn.addEventListener('click', () => {
+    playAgain();
 });
 
 /* Run page load code */
