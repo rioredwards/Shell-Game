@@ -10,110 +10,63 @@ let wins = 0;
 let losses = 0;
 let total = 0;
 
-const shellOptions = ['1', '2', '3'];
+const shellOptions = [1, 2, 3];
 
 /* Component */
 // Get DOM
 const results = document.getElementById('results');
 const playAgainBtn = document.getElementById('play-again-button');
+const guessesDiv = document.getElementById('guessesDiv');
 
-const guesses = document.getElementById('guesses');
-const guess1 = document.getElementById('guess-1');
-const guess2 = document.getElementById('guess-2');
-const guess3 = document.getElementById('guess-3');
-const shell1 = document.getElementById('shell-1');
-const shell2 = document.getElementById('shell-2');
-const shell3 = document.getElementById('shell-3');
-const pearl1 = document.getElementById('pearl-1');
-const pearl2 = document.getElementById('pearl-2');
-const pearl3 = document.getElementById('pearl-3');
-const display1 = document.getElementById('display-1');
-const display2 = document.getElementById('display-2');
-const display3 = document.getElementById('display-3');
+// Get triplet DOM Elements: (guessesEl, ShellsEl, pearlsEl and displaysEl)
+const guessesEl = [];
+const shellsEl = [];
+const pearlsEl = [];
+const displaysEl = [];
+for (let i = 0; i < 3; i++) {
+    guessesEl[i] = document.getElementById(`guess-${i + 1}`);
+    shellsEl[i] = document.getElementById(`shell-${i + 1}`);
+    pearlsEl[i] = document.getElementById(`pearl-${i + 1}`);
+    displaysEl[i] = document.getElementById(`display-${i + 1}`);
+}
+
 const winsDisplay = document.getElementById('wins-display');
 const lossesDisplay = document.getElementById('losses-display');
 const totalDisplay = document.getElementById('total-display');
 
 // display
 /* Actions */
-function displayShells(gameState) {
-    if (gameState === 'guess') {
-        guesses.classList.remove('hidden');
-        results.classList.add('hidden');
-        playAgainBtn.classList.add('hidden');
-        pearl1.classList.add('hidden');
-        pearl2.classList.add('hidden');
-        pearl3.classList.add('hidden');
-        shell1.classList.remove('reveal');
-        shell2.classList.remove('reveal');
-        shell3.classList.remove('reveal');
-        display1.textContent = '';
-        display2.textContent = '';
-        display3.textContent = '';
-    } else if (gameState === 'results') {
-        guesses.classList.add('hidden');
-        results.classList.remove('hidden');
-        playAgainBtn.classList.remove('hidden');
-        if (guess === '1') {
-            shell1.classList.add('reveal');
-            if (result === 'win') {
-                display1.textContent = 'Found it!';
-                pearl1.classList.remove('hidden');
-            } else {
-                display1.textContent = 'Not Here!';
-                if (pearl === 2) {
-                    shell2.classList.add('reveal');
-                    pearl2.classList.remove('hidden');
-                } else {
-                    shell3.classList.add('reveal');
-                    pearl3.classList.remove('hidden');
-                }
-            }
-        } else if (guess === '2') {
-            shell2.classList.add('reveal');
-            if (result === 'win') {
-                display2.textContent = 'Found it!';
-                pearl2.classList.remove('hidden');
-            } else {
-                display2.textContent = 'Not Here!';
-                if (pearl === 1) {
-                    shell1.classList.add('reveal');
-                    pearl1.classList.remove('hidden');
-                } else {
-                    shell3.classList.add('reveal');
-                    pearl3.classList.remove('hidden');
-                }
-            }
-        } else {
-            shell3.classList.add('reveal');
-            if (result === 'win') {
-                display3.textContent = 'Found it!';
-                pearl3.classList.remove('hidden');
-            } else {
-                display3.textContent = 'Not Here!';
-                if (pearl === 1) {
-                    shell1.classList.add('reveal');
-                    pearl1.classList.remove('hidden');
-                } else {
-                    shell2.classList.add('reveal');
-                    pearl2.classList.remove('hidden');
-                }
-            }
-        }
+function displayGuess() {
+    guessesDiv.classList.remove('hidden');
+    results.classList.add('hidden');
+    playAgainBtn.classList.add('hidden');
+    for (let i = 0; i < 3; i++) {
+        pearlsEl[i].classList.add('hidden');
+        shellsEl[i].classList.remove('reveal');
+        displaysEl[i].textContent = '';
     }
 }
 
-function liftShell(userGuess) {
+function displayResults() {
+    guessesDiv.classList.add('hidden');
+    results.classList.remove('hidden');
+    playAgainBtn.classList.remove('hidden');
+    shellsEl[guess - 1].classList.add('reveal');
+    pearlsEl[pearl - 1].classList.remove('hidden');
+    if (result === 'win') {
+        displaysEl[guess - 1].textContent = 'Found It!';
+    } else {
+        displaysEl[guess - 1].textContent = 'Not Here!';
+        shellsEl[pearl - 1].classList.add('reveal');
+    }
+}
+
+function makeGuess(userGuess) {
     gameState = 'results';
     guess = userGuess;
-    if (userGuess === pearl) {
-        result = 'win';
-    } else {
-        result = 'lose';
-    }
+    result = userGuess === pearl ? 'win' : 'lose';
     updateScoreboard();
-    displayShells(gameState);
-    loadPage();
+    displayResults();
 }
 
 function placePearl() {
@@ -123,17 +76,14 @@ function placePearl() {
 function playAgain() {
     gameState = 'guess';
     result = '';
-    guess = '';
-    pearl = '';
+    guess = 0;
+    pearl = 0;
     loadPage();
 }
 
 function updateScoreboard() {
-    if (result === 'win') {
-        wins++;
-    } else {
-        losses++;
-    }
+    if (result === 'win') wins++;
+    if (result === 'lose') losses++;
     total++;
 }
 
@@ -144,23 +94,19 @@ function displayScoreboard() {
 }
 
 function loadPage() {
-    displayShells(gameState);
-    if (gameState === 'guess') placePearl(pearl);
+    if (gameState === 'guess') {
+        placePearl();
+        displayGuess();
+    }
     displayScoreboard();
 }
 
 // event listeners
-guess1.addEventListener('click', () => {
-    liftShell('1');
-});
-
-guess2.addEventListener('click', () => {
-    liftShell('2');
-});
-
-guess3.addEventListener('click', () => {
-    liftShell('3');
-});
+for (let i = 0; i < 3; i++) {
+    guessesEl[i].addEventListener('click', () => {
+        makeGuess(i + 1);
+    });
+}
 
 playAgainBtn.addEventListener('click', () => {
     playAgain();
